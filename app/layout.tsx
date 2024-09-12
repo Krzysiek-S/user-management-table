@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { Providers } from "./providers/Providers";
 
+import "./globals.css";
+
 export const metadata = {
   title: "User Management App",
   description: "A simple user management application",
