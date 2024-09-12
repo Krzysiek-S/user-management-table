@@ -1,15 +1,6 @@
 import React from "react";
 import UserTable from "../../(users)/components/UserTable";
-
-async function fetchUsers() {
-  const response = await fetch("https://jsonplaceholder.typicode.com/users", {
-    cache: "no-store",
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fetch users");
-  }
-  return response.json();
-}
+import { fetchUsers } from "@/app/(users)/fetchUsers";
 
 const UserPage = async () => {
   const users = await fetchUsers();

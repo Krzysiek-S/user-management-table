@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { setUsers, setFilter } from "../../redux/userSlice";
@@ -12,20 +12,41 @@ const UserTable: React.FC<{ users: User[] }> = ({ users }) => {
     (state: RootState) => state.users
   );
 
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     dispatch(setUsers(users));
   }, [dispatch, users]);
+
+  useEffect(() => {
+    const handleScroll = (e: WheelEvent) => {
+      if (scrollRef.current && e.deltaY !== 0 && e.deltaX === 0) {
+        e.preventDefault();
+        scrollRef.current.scrollLeft += e.deltaY;
+      }
+    };
+
+    const current = scrollRef.current;
+    current?.addEventListener("wheel", handleScroll);
+
+    return () => {
+      current?.removeEventListener("wheel", handleScroll);
+    };
+  }, []);
 
   const handleFilterChange = (key: keyof typeof filters, value: string) => {
     dispatch(setFilter({ key, value }));
   };
 
   return (
-    <div className="container mx-auto p-4 border rounded-2xl max-w-screen-xl shadow-lg bg-[#ebf6ff]">
+    <div className="container mx-auto p-4 border rounded-2xl max-w-[1200px] shadow-lg bg-[#ebf6ff]">
       <span className="flex items-center pb-4 font-bold justify-center">
         Users
       </span>
-      <div className="overflow-x-auto border rounded-2xl">
+      <div
+        className="overflow-x-auto border rounded-2xl scroll-smooth"
+        ref={scrollRef}
+      >
         <table className="min-w-full bg-[#f4faff]">
           <thead className="bg-[#e5f1fa]">
             <tr className="border-b">

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: UserState = {
-  allUsers: [], // Inicjalizacja pełnej listy użytkowników
-  filteredUsers: [], // Inicjalizacja listy filtrowanej
+  allUsers: [],
+  filteredUsers: [],
   filters: {
     name: "",
     username: "",
@@ -17,7 +17,7 @@ const userSlice = createSlice({
   reducers: {
     setUsers(state, action: PayloadAction<User[]>) {
       state.allUsers = action.payload;
-      state.filteredUsers = action.payload; // Inicjalnie lista filtrowana jest równa pełnej liście
+      state.filteredUsers = action.payload;
     },
     setFilter(
       state,
@@ -25,7 +25,6 @@ const userSlice = createSlice({
     ) {
       state.filters[action.payload.key] = action.payload.value;
 
-      // Filtracja zawsze na podstawie pełnej listy użytkowników
       state.filteredUsers = state.allUsers.filter((user) =>
         Object.keys(state.filters).every((key) =>
           user[key as keyof User]
