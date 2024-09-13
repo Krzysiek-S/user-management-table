@@ -30,7 +30,7 @@ const userSlice = createSlice({
           user[key as keyof User]
             .toString()
             .toLowerCase()
-            .includes(
+            .startsWith(
               state.filters[key as keyof UserState["filters"]].toLowerCase()
             )
         )
